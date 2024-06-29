@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="type">Type</string>
+    <string name="search_here">Search here</string>
 </resources>
