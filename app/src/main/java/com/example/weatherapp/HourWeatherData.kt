@@ -1,8 +1,8 @@
 package com.example.weatherapp
 
-import android.provider.ContactsContract.RawContacts.Data
+import java.util.Date
 
 data class HourWeatherData(
-    val hour : Data,
+    val hour : Date,
     val degrees : Int
 )

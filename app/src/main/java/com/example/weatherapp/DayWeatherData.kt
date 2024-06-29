@@ -1,10 +1,10 @@
 package com.example.weatherapp
 
-import android.provider.ContactsContract.RawContacts.Data
+import java.util.Date
 
 data class DayWeatherData(
     val day : String,
-    val data : Data,
+    val data : Date,
     val minDegrees : Int,
     val maxDegrees : Int
 )
