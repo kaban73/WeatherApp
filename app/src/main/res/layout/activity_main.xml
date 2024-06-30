@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:completionThreshold="1"
         />
 
     <LinearLayout
@@ -45,8 +46,8 @@
             android:background="@drawable/shape_round"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp">
+            android:paddingStart="56dp"
+            android:paddingEnd="56dp">
             <ImageView
                 android:id="@+id/todayWeatherImageView"
                 android:layout_width="match_parent"
@@ -69,6 +70,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Wind: 18-21 m/s SW"/>
+
+            <TextView
+                android:id="@+id/precipTodayWeatherTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Precip: 18 mm"/>
         </LinearLayout>
     </LinearLayout>
 
