@@ -1,42 +1,27 @@
 package com.example.weatherapp
 
 import android.os.Bundle
-import android.util.Log
-import android.view.inputmethod.EditorInfo
-import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.widget.addTextChangedListener
+import com.example.weatherapp.core.App
 import com.example.weatherapp.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import com.example.weatherapp.todayWeather.TodayWeatherAdapter
 import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Calendar
 import java.util.Date
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var b : ActivityMainBinding
-//    private val hourAdapter = WeatherHourAdapter()
-//    private val dayAdapter = WeatherDayAdapter()
+    private val todayWeatherAdapter = TodayWeatherAdapter()
     private lateinit var viewModel: ViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         b = ActivityMainBinding.inflate(layoutInflater)
         setContentView(b.root)
-//        b.todayWeatherRecyclerView.adapter = hourAdapter
-//        b.futureWeatherRecyclerView.adapter = dayAdapter
+        b.todayWeatherRecyclerView.adapter = todayWeatherAdapter
         viewModel = (application as App).viewModel
         viewModel.cityLiveData().observe(this) {
-            viewModel.updateCurrentWeather(it)
+            viewModel.updateWeatherInfo(it)
         }
         viewModel.currentWeatherLiveData().observe(this) {
             val unixTime = it.date
@@ -57,6 +42,9 @@ class MainActivity : AppCompatActivity() {
             else
                 "Precip: 0 mm"
 
+        }
+        viewModel.todayWeatherLiveData().observe(this) {
+            todayWeatherAdapter.update(it)
         }
         viewModel.init("Ulyanovsk")
 
