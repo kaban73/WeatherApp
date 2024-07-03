@@ -8,6 +8,9 @@ import com.example.weatherapp.city.CityService
 import com.example.weatherapp.currentWeather.CurrentWeatherLiveDataWrapper
 import com.example.weatherapp.currentWeather.CurrentWeatherRepository
 import com.example.weatherapp.currentWeather.CurrentWeatherService
+import com.example.weatherapp.futureWeather.FutureWeatherLiveDataWrapper
+import com.example.weatherapp.futureWeather.FutureWeatherRepository
+import com.example.weatherapp.futureWeather.FutureWeatherService
 import com.example.weatherapp.todayWeather.TodayWeatherLiveDataWrapper
 import com.example.weatherapp.todayWeather.TodayWeatherRepository
 import com.example.weatherapp.todayWeather.TodayWeatherService
@@ -25,13 +28,16 @@ class App : Application() {
         val cityService = retrofit.create(CityService::class.java)
         val currentWeatherService = retrofit.create(CurrentWeatherService::class.java)
         val todayWeatherService = retrofit.create(TodayWeatherService::class.java)
+        val futureWeatherService = retrofit.create(FutureWeatherService::class.java)
         viewModel = ViewModel(
             CityRepository.Base(cityService),
             CurrentWeatherRepository.Base(currentWeatherService),
             TodayWeatherRepository.Base(todayWeatherService),
+            FutureWeatherRepository.Base(futureWeatherService),
             CityLivaDataWrapper.Base(),
             CurrentWeatherLiveDataWrapper.Base(),
-            TodayWeatherLiveDataWrapper.Base()
+            TodayWeatherLiveDataWrapper.Base(),
+            FutureWeatherLiveDataWrapper.Base()
             )
     }
 
