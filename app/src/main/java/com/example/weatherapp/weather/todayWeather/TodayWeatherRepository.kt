@@ -1,4 +1,4 @@
-package com.example.weatherapp.todayWeather
+package com.example.weatherapp.weather.todayWeather
 
 interface TodayWeatherRepository {
     suspend fun load(

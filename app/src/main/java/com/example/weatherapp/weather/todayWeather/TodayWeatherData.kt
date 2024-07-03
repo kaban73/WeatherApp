@@ -1,4 +1,4 @@
-package com.example.weatherapp.todayWeather
+package com.example.weatherapp.weather.todayWeather
 
 data class TodayWeatherData(
     val icon : String,

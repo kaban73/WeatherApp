@@ -12,7 +12,7 @@ interface LiveDataWrapper {
     }
     interface Mutable<T> : Read<T>, Update<T>
     abstract class Base<T>(
-        protected val liveData: MutableLiveData<T> = MutableLiveData()
+        protected val liveData: MutableLiveData<T> = SingleLiveEvent()
     ) : Mutable<T> {
         override fun liveData(): LiveData<T> =
             liveData

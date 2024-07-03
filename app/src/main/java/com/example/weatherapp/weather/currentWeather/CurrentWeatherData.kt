@@ -1,11 +1,11 @@
-package com.example.weatherapp.currentWeather
+package com.example.weatherapp.weather.currentWeather
 
 import com.google.gson.annotations.SerializedName
 
 data class CurrentWeatherData(
     @SerializedName("weather") val weather : List<CurrentWeatherInfo>,
     @SerializedName("main") val main : CurrentWeatherMain,
-    @SerializedName("wind") val wind :CurrentWeatherWind,
+    @SerializedName("wind") val wind : CurrentWeatherWind,
     @SerializedName("rain") val rain : CurrentRainInfo?,
     @SerializedName("snow") val snow : CurrentSnowInfo?,
     @SerializedName("dt") val date : Long

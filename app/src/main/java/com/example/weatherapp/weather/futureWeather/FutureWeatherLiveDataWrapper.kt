@@ -1,4 +1,4 @@
-package com.example.weatherapp.futureWeather
+package com.example.weatherapp.weather.futureWeather
 
 import com.example.weatherapp.core.LiveDataWrapper
 
