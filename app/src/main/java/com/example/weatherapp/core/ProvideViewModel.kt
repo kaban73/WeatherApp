@@ -1,9 +1,10 @@
 package com.example.weatherapp.core
 
 import androidx.lifecycle.ViewModel
-import com.example.weatherapp.city.CityLivaDataWrapper
-import com.example.weatherapp.city.CityRepository
-import com.example.weatherapp.city.CityViewModel
+import com.example.weatherapp.city.core.CityLivaDataWrapper
+import com.example.weatherapp.city.repository.CityRepository
+import com.example.weatherapp.city.core.CityViewModel
+import com.example.weatherapp.city.list.CityListLiveDataWrapper
 import com.example.weatherapp.main.MainViewModel
 import com.example.weatherapp.main.Navigation
 import com.example.weatherapp.weather.WeatherViewModel
@@ -29,11 +30,12 @@ interface ProvideViewModel {
         private val currentWeatherLiveDataWrapper = CurrentWeatherLiveDataWrapper.Base()
         private val todayWeatherLiveDataWrapper = TodayWeatherLiveDataWrapper.Base()
         private val futureWeatherLiveDataWrapper = FutureWeatherLiveDataWrapper.Base()
+        private val cityLisLiveDataWrapper = CityListLiveDataWrapper.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T = when(viewModelClass) {
             MainViewModel::class.java -> MainViewModel(navigation)
             WeatherViewModel::class.java -> WeatherViewModel(cityRepository,currentWeatherRepository,todayWeatherRepository,futureWeatherRepository,cityLiveDataWrapper,currentWeatherLiveDataWrapper, todayWeatherLiveDataWrapper, futureWeatherLiveDataWrapper, navigation)
-            CityViewModel::class.java -> CityViewModel(navigation, clearViewModel)
+            CityViewModel::class.java -> CityViewModel(cityLisLiveDataWrapper, cityLiveDataWrapper, cityRepository,navigation, clearViewModel)
             else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
         } as T
     }

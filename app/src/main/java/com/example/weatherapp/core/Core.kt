@@ -1,6 +1,6 @@
 package com.example.weatherapp.core
 
-import com.example.weatherapp.city.CityService
+import com.example.weatherapp.city.repository.CityService
 import com.example.weatherapp.weather.currentWeather.CurrentWeatherService
 import com.example.weatherapp.weather.futureWeather.FutureWeatherService
 import com.example.weatherapp.weather.todayWeather.TodayWeatherService

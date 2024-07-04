@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
+import com.example.weatherapp.R
 import com.example.weatherapp.core.AbstractFragment
-import com.example.weatherapp.core.App
 import com.example.weatherapp.core.ProvideViewModel
+import com.example.weatherapp.databinding.CityLayoutBinding
 import com.example.weatherapp.databinding.WeatherLayoutBinding
-import com.example.weatherapp.main.MainActivity
 import com.example.weatherapp.weather.futureWeather.FutureWeatherAdapter
 import com.example.weatherapp.weather.todayWeather.TodayWeatherAdapter
+import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -36,6 +36,7 @@ class WeatherFragment : AbstractFragment<WeatherLayoutBinding>() {
 
         weatherViewModel.cityLiveData().observe(viewLifecycleOwner) {
             weatherViewModel.updateWeatherInfo(it)
+            b.autoCompleteTextView.setText(it.name)
         }
         weatherViewModel.currentWeatherLiveData().observe(viewLifecycleOwner) {
             val unixTime = it.date

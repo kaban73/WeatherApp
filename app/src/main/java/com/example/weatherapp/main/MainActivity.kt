@@ -4,15 +4,9 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
-import com.example.weatherapp.city.CityViewModel
-import com.example.weatherapp.weather.WeatherViewModel
 import com.example.weatherapp.core.App
 import com.example.weatherapp.core.ProvideViewModel
 import com.example.weatherapp.databinding.ActivityMainBinding
-import com.example.weatherapp.weather.futureWeather.FutureWeatherAdapter
-import com.example.weatherapp.weather.todayWeather.TodayWeatherAdapter
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class MainActivity : AppCompatActivity(), ProvideViewModel {
     private lateinit var b : ActivityMainBinding

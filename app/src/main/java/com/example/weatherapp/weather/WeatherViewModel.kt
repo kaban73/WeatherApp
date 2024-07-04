@@ -1,9 +1,9 @@
 package com.example.weatherapp.weather
 
 import androidx.lifecycle.ViewModel
-import com.example.weatherapp.city.CityLivaDataWrapper
-import com.example.weatherapp.city.CityRepository
-import com.example.weatherapp.city.CityResponse
+import com.example.weatherapp.city.core.CityData
+import com.example.weatherapp.city.core.CityLivaDataWrapper
+import com.example.weatherapp.city.repository.CityRepository
 import com.example.weatherapp.city.CityScreen
 import com.example.weatherapp.main.Navigation
 import com.example.weatherapp.weather.currentWeather.CurrentWeatherLiveDataWrapper
@@ -34,17 +34,17 @@ class WeatherViewModel(
     fun init(cityName : String) {
         viewModelScope.launch {
             val cities = cityRepository.load(cityName, "", "")
-            cityLivaDataWrapper.update(cities.last())
+            cityLivaDataWrapper.update(cities.last().let { CityData(it.name + ", " + it.state, it.lat, it.lon) })
         }
     }
-    fun updateWeatherInfo(cityResponse: CityResponse) {
+    fun updateWeatherInfo(cityData: CityData) {
         viewModelScope.launch {
-            val currentWeather = currentWeatherRepository.load(cityResponse.lat, cityResponse.lon)
+            val currentWeather = currentWeatherRepository.load(cityData.lat, cityData.lon)
             val todayWeather = ArrayList<TodayWeatherData>()
-            todayWeatherRepository.load(cityResponse.lat, cityResponse.lon).list.forEach {
+            todayWeatherRepository.load(cityData.lat, cityData.lon).list.forEach {
                 todayWeather.add(TodayWeatherData(it.weather.last().icon, it.time.toString(), it.main.temp.toString()))
             }
-            val futureWeatherCalc = FutureWeatherCalc.Base(futureWeatherRepository.load(cityResponse.lat, cityResponse.lon))
+            val futureWeatherCalc = FutureWeatherCalc.Base(futureWeatherRepository.load(cityData.lat, cityData.lon))
             val futureWeather = futureWeatherCalc.list()
             currentWeatherLiveDataWrapper.update(currentWeather)
             todayWeatherLiveDataWrapper.update(todayWeather)

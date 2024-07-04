@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:id="@+id/cityLayout">
 
-    <AutoCompleteTextView
-        android:id="@+id/citySearch"
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_marginTop="20dp"
+        android:id="@+id/cityEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Type here"/>
+        android:hint="Find city"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cityRecyclerView"
