@@ -10,4 +10,11 @@ interface CityService {
         @Query("limit") limit : String,
         @Query("appid") apiKey : String
         ) : List<CityResponse>
+    @GET("/geo/1.0/reverse")
+    suspend fun fetch(
+        @Query("lat") lat : Double,
+        @Query("lon") lon : Double,
+        @Query("limit") limit : String,
+        @Query("appid") apiKey : String
+    ) : List<CityResponse>
 }

@@ -10,6 +10,7 @@ kotlinxDatetime = "1.0.1"
 material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
+playServicesLocation = "21.3.0"
 retrofit = "2.9.0"
 protoliteWellKnownTypes = "18.0.0"
 
@@ -24,6 +25,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 protolite-well-known-types = { group = "com.google.firebase", name = "protolite-well-known-types", version.ref = "protoliteWellKnownTypes" }
 

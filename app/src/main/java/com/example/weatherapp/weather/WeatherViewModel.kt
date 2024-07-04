@@ -1,5 +1,6 @@
 package com.example.weatherapp.weather
 
+import android.location.Location
 import androidx.lifecycle.ViewModel
 import com.example.weatherapp.city.core.CityData
 import com.example.weatherapp.city.core.CityLivaDataWrapper
@@ -31,9 +32,12 @@ class WeatherViewModel(
     private val navigation: Navigation.Update
 ) : ViewModel(){
     private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-    fun init(cityName : String) {
+    fun init(location: Location?) {
         viewModelScope.launch {
-            val cities = cityRepository.load(cityName, "", "")
+            val cities = if (location != null)
+                    cityRepository.load(location.latitude, location.longitude, "", "")
+                else
+                    cityRepository.load("Moscow", "", "")
             cityLivaDataWrapper.update(cities.last().let { CityData(it.name + ", " + it.state, it.lat, it.lon) })
         }
     }
