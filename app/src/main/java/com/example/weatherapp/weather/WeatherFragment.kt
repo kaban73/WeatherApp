@@ -17,8 +17,6 @@ import androidx.core.location.component1
 import androidx.core.location.component2
 import com.example.weatherapp.R
 import com.example.weatherapp.core.AbstractFragment
-import com.example.weatherapp.core.AppPermissions
-import com.example.weatherapp.core.LocationHelper
 import com.example.weatherapp.core.ProvideViewModel
 import com.example.weatherapp.databinding.CityLayoutBinding
 import com.example.weatherapp.databinding.WeatherLayoutBinding
@@ -41,8 +39,6 @@ class WeatherFragment : AbstractFragment<WeatherLayoutBinding>() {
     override fun bind(inflater: LayoutInflater, container: ViewGroup?): WeatherLayoutBinding {
         return WeatherLayoutBinding.inflate(inflater, container, false)
     }
-
-    private lateinit var locationCallback: LocationCallback
 
     private val todayWeatherAdapter = TodayWeatherAdapter()
     private val futureWeatherAdapter = FutureWeatherAdapter()
@@ -75,9 +71,11 @@ class WeatherFragment : AbstractFragment<WeatherLayoutBinding>() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) {
@@ -102,17 +100,10 @@ class WeatherFragment : AbstractFragment<WeatherLayoutBinding>() {
                             )
                             result.addOnCompleteListener{
                                 location = it.result
+                                weatherViewModel.init(location)
                             }
                             return@registerForActivityResult
                         } else {
-                            val result =  fusedLocationClient.getCurrentLocation(
-                                Priority.PRIORITY_BALANCED_POWER_ACCURACY,
-                                CancellationTokenSource().token
-                            )
-                            result.addOnCompleteListener{
-                                location = it.result
-                                weatherViewModel.init(location)
-                            }
                         }
 
                     } else {
@@ -130,10 +121,9 @@ class WeatherFragment : AbstractFragment<WeatherLayoutBinding>() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
         )
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+
         b.todayWeatherRecyclerView.adapter = todayWeatherAdapter
         b.futureWeatherRecyclerView.adapter = futureWeatherAdapter
         weatherViewModel = (activity as ProvideViewModel).viewModel(WeatherViewModel::class.java)
