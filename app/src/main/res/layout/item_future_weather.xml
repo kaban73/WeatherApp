@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/futureWeatherLayout">
+
+    <ImageView
+        android:id="@+id/futureWeatherImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        app:layout_constraintStart_toEndOf="@+id/futureWeatherImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/futureWeatherRangeDegreesTextView"
+        app:layout_constraintBottom_toBottomOf="@+id/futureWeatherImageView"
+        android:id="@+id/futureWeatherDateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="Sunday, 30 June"
+        android:textAlignment="center"
+        android:layout_weight="1"/>
+
+    <TextView
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/futureWeatherImageView"
+        android:id="@+id/futureWeatherRangeDegreesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="20C/30C"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/todayWeatherLayout">
+
+    <ImageView
+        android:id="@+id/todayWeatherIamgeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:src="@mipmap/ic_launcher"/>
+    <TextView
+        android:id="@+id/todayWeatherTimeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        tools:text="12:00"/>
+    <TextView
+        android:id="@+id/todayWeatherDegreesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="30C"
+        android:textAlignment="center"/>
+
+</LinearLayout>
