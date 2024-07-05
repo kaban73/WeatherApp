@@ -1,5 +1,6 @@
 package com.example.weatherapp
 
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +19,6 @@ import org.hamcrest.CoreMatchers.allOf
 
 class TodayWeatherInfoLayout {
     private val rootId : Int = R.id.todayWeatherInfoLayout
-    private fun todayWeatherRecyclerViewMatcher() = RecyclerViewMatcher(R.id.todayWeatherRecyclerView)
 
     private fun rootLayout() = onView(
         allOf(
@@ -30,6 +30,7 @@ class TodayWeatherInfoLayout {
     )
     fun checkVisibleTodayWeatherInfoLayout() {
         rootLayout().check(matches(isDisplayed()))
+        todayDateTextView().check(matches(isDisplayed()))
     }
     private fun todayDateTextView() = onView(
         allOf(
@@ -41,23 +42,74 @@ class TodayWeatherInfoLayout {
     )
     fun checkTextTodayDateTextView(date : String) {
         todayDateTextView().check(matches(withText(date)))
+        checkVisibleTodayWeatherMainInfoLayout()
     }
     private fun todayWeatherMainInfoLayout() = onView(
-        isAssignableFrom(LinearLayout::class.java),
-        withId(R.id.todayWeatherMainInfoLayout),
-        withParent(isAssignableFrom(LinearLayout::class.java)),
-
+        allOf(
+            isAssignableFrom(LinearLayout::class.java),
+            withId(R.id.todayWeatherMainInfoLayout),
+            withParent(isAssignableFrom(LinearLayout::class.java)),
+            withParent(withId(rootId))
+        )
+    )
+    private fun checkVisibleTodayWeatherMainInfoLayout() {
+        todayWeatherMainInfoLayout().check(matches(isDisplayed()))
+        nowWeatherImageView().check(matches(isDisplayed()))
+        nowDegreesTextView().check(matches(isDisplayed()))
+        todayRangeDegreesTextView().check(matches(isDisplayed()))
+        windTextView().check(matches(isDisplayed()))
+        precipTextView().check(matches(isDisplayed()))
+    }
+    private fun nowWeatherImageView() = onView(
+        allOf(
+            isAssignableFrom(ImageView::class.java),
+            withParent(isAssignableFrom(LinearLayout::class.java)),
+            withParent(withId(R.id.todayWeatherMainInfoLayout)),
+            withId(R.id.nowWeatherImageView)
+        )
     )
     private fun nowDegreesTextView() = onView(
         allOf(
             isAssignableFrom(TextView::class.java),
             withParent(isAssignableFrom(LinearLayout::class.java)),
-            withParent(withId(rootId)),
-            withId(R.id.nwoDegreesTextView)
+            withParent(withId(R.id.todayWeatherMainInfoLayout)),
+            withId(R.id.nowDegreesTextView)
         )
     )
     fun checkTextNowDegreesTextView(degrees : String) {
         nowDegreesTextView().check(matches(withText(degrees)))
     }
-    private fun
+    private fun todayRangeDegreesTextView() = onView(
+        allOf(
+            isAssignableFrom(TextView::class.java),
+            withParent(isAssignableFrom(LinearLayout::class.java)),
+            withParent(withId(R.id.todayWeatherMainInfoLayout)),
+            withId(R.id.todayRangeDegreesTextView)
+        )
+    )
+    fun checkTextTodayRangeDegreesTextView(degrees : String) {
+        todayRangeDegreesTextView().check(matches(withText(degrees)))
+    }
+    private fun windTextView() = onView(
+        allOf(
+            isAssignableFrom(TextView::class.java),
+            withParent(isAssignableFrom(LinearLayout::class.java)),
+            withParent(withId(R.id.todayWeatherMainInfoLayout)),
+            withId(R.id.windTextView)
+        )
+    )
+    fun checkTextWindTextView(windInfo : String) {
+        windTextView().check(matches(withText(windInfo)))
+    }
+    private fun precipTextView() = onView(
+        allOf(
+            isAssignableFrom(TextView::class.java),
+            withParent(isAssignableFrom(LinearLayout::class.java)),
+            withParent(withId(R.id.todayWeatherMainInfoLayout)),
+            withId(R.id.precipTextView)
+        )
+    )
+    fun checkTextPrecipTextView(precipInfo : String) {
+        precipTextView().check(matches(withText(precipInfo)))
+    }
 }
