@@ -51,7 +51,7 @@
                 android:id="@+id/nowWeatherImageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:src="@drawable/ic_something_wrong"/>
+                tools:src="@mipmap/ic_13n"/>
             <TextView
                 android:id="@+id/nowDegreesTextView"
                 android:layout_width="match_parent"
