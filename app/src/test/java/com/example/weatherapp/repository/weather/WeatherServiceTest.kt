@@ -1,4 +1,4 @@
-package com.example.weatherapp.repository
+package com.example.weatherapp.repository.weather
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
