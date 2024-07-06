@@ -15,7 +15,9 @@ class CityServiceTest {
             .build()
         val cityService = retrofit.create(CityService::class.java)
         val actualCities : List<CityResponse> = cityService.fetch(
-            cityName = "Ulyanovsk"
+            cityName = "Ulyanovsk",
+            apiKey = API_KEY,
+            limit = LIMIT
         )
         val expectedCities = listOf(
             CityResponse(
@@ -30,7 +32,9 @@ class CityServiceTest {
 
         val actualCitiesReverse : List<CityResponse> = cityService.fetch(
             lat = 54.3107593,
-            lon = 48.3642771
+            lon = 48.3642771,
+            apiKey = API_KEY,
+            limit = LIMIT
         )
         val expectedCitiesReverse = listOf(
             CityResponse(
@@ -42,5 +46,9 @@ class CityServiceTest {
             )
         )
         assertEquals(expectedCitiesReverse, actualCitiesReverse)
+    }
+    companion object {
+        private const val API_KEY = "4240ded606dd2468bd5ed39d7a005a32" // Write Your API key
+        private const val LIMIT = 5
     }
 }

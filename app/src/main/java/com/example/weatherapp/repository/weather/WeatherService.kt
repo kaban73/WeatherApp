@@ -1,5 +1,8 @@
 package com.example.weatherapp.repository.weather
 
+import com.example.weatherapp.repository.weather.response.CurrentWeatherResponse
+import com.example.weatherapp.repository.weather.response.FutureWeatherResponse
+import com.example.weatherapp.repository.weather.response.TodayWeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

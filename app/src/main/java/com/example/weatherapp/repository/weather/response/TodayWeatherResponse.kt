@@ -1,4 +1,4 @@
-package com.example.weatherapp.repository.weather
+package com.example.weatherapp.repository.weather.response
 
 import com.google.gson.annotations.SerializedName
 
@@ -7,7 +7,7 @@ data class TodayWeatherResponse(
 )
 
 data class TodayWeatherInfo(
-    @SerializedName("dt") val time : Long,
+    @SerializedName("dt") val date : Long,
     @SerializedName("main") val main : TodayWeatherMain,
     @SerializedName("weather") val weather : List<TodayWeatherWeatherInfo>
 )

@@ -1,155 +1,77 @@
 package com.example.weatherapp.repository.weather
 
+import com.example.weatherapp.repository.weather.response.CurrentWeatherResponse
+import com.example.weatherapp.repository.weather.response.FutureWeatherResponse
+import com.example.weatherapp.repository.weather.response.TodayWeatherResponse
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 /**
  * Please check https://openweathermap.org/api for Current Weather Data and 5 Day / 3 Hour Forecast
  * Functions in service differ by @GET(*some link*) annotation of Retrofit
+ * To write data classes, you need to check json-requests
  */
 
 class WeatherServiceTest {
     @Test
     fun test() = runBlocking {
-        val weatherService : FakeWeatherService = FakeWeatherService.Base()
-        val actualCurrentWeather = weatherService.currentWeatherFetch(
-            latitude = 0.00,
-            longitude = 0.00
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val weatherService : WeatherService = retrofit.create(WeatherService::class.java)
+        val fakeWeatherService: FakeWeatherService = retrofit.create(FakeWeatherService::class.java)
+        val actualCurrentWeather : CurrentWeatherResponse = fakeWeatherService.currentWeatherFetch(
+            latitude = 54.3107593,
+            longitude = 48.3642771,
+            appid = API_KEY,
+            units = UNITS
         )
-        val expectedCurrentWeather = FakeCurrentWeatherResponse(
-            "icon",
-            0.0,
-            0.0,
-            0,
-            null,
-            0.0,
-            0L
+        val expectedCurrentWeather = weatherService.currentWeatherFetch(
+            latitude = 54.3107593,
+            longitude = 48.3642771,
+            appid = API_KEY,
+            units = UNITS,
         )
         assertEquals(expectedCurrentWeather, actualCurrentWeather)
 
-        val actualTodayWeather = weatherService.todayWeatherFetch(
-            latitude = 0.0,
-            longitude = 0.0
+        val actualTodayWeather : TodayWeatherResponse = fakeWeatherService.todayWeatherFetch(
+            latitude = 54.3107593,
+            longitude = 48.3642771,
+            appid = API_KEY,
+            units = UNITS,
+            count = COUNT
         )
-        val expectedTodayWeather = FakeTodayWeatherResponse(
-            0,
-            0.0,
-            "icon"
+        val expectedTodayWeather = weatherService.todayWeatherFetch(
+            latitude = 54.3107593,
+            longitude = 48.3642771,
+            appid = API_KEY,
+            units = UNITS,
+            count = COUNT
         )
         assertEquals(expectedTodayWeather, actualTodayWeather)
 
-        val actualFutureWeather = weatherService.futureWeatherFetch(
-            latitude = 0.0,
-            longitude = 0.0
+        val actualFutureWeather : FutureWeatherResponse = fakeWeatherService.futureWeatherFetch(
+            latitude = 54.3107593,
+            longitude = 48.3642771,
+            appid = API_KEY,
+            units = UNITS
         )
-        val expectedFutureWeather = FakeFutureWeatherResponse(
-            0,
-            0.0,
-            "icon"
+        val expectedFutureWeather = weatherService.futureWeatherFetch(
+            latitude = 54.3107593,
+            longitude = 48.3642771,
+            appid = API_KEY,
+            units = UNITS
         )
         assertEquals(expectedFutureWeather, actualFutureWeather)
     }
-
-    interface FakeWeatherService {
-        companion object {
-            private const val APPID = "API_KEY"
-            private const val UNITS = "metrics"
-            private const val COUNT = 5
-        }
-        // @GET("/data/2.5/weather")
-        suspend fun currentWeatherFetch(
-            latitude : Double,
-            longitude : Double,
-            appid : String = APPID,
-            units : String = UNITS
-        ) : FakeCurrentWeatherResponse
-
-        // @GET("/data/2.5/forecast")
-        suspend fun todayWeatherFetch(
-            latitude : Double,
-            longitude : Double,
-            appid : String = APPID,
-            units : String = UNITS,
-            count : Int = COUNT
-        ) : FakeTodayWeatherResponse
-
-        // @GET("/data/2.5/forecast")
-        suspend fun futureWeatherFetch(
-            latitude : Double,
-            longitude : Double,
-            appid : String = APPID,
-            units : String = UNITS
-        ) : FakeFutureWeatherResponse
-        class Base : FakeWeatherService {
-            private val fakeWeather = mutableMapOf(
-                "current" to FakeCurrentWeatherResponse(
-                    "icon",
-                    0.0,
-                    0.0,
-                    0,
-                    null,
-                    0.0,
-                    0L
-                ),
-                "today" to FakeTodayWeatherResponse(
-                    0,
-                    0.0,
-                    "icon"
-                ),
-                "future" to FakeFutureWeatherResponse(
-                    0,
-                    0.0,
-                    "icon"
-                )
-            )
-
-            override suspend fun currentWeatherFetch(
-                latitude: Double,
-                longitude: Double,
-                appid: String,
-                units: String
-            ): FakeCurrentWeatherResponse {
-                return fakeWeather["current"] as FakeCurrentWeatherResponse
-            }
-
-            override suspend fun todayWeatherFetch(
-                latitude: Double,
-                longitude: Double,
-                appid: String,
-                units: String,
-                count: Int
-            ): FakeTodayWeatherResponse {
-                return fakeWeather["today"] as FakeTodayWeatherResponse
-            }
-
-            override suspend fun futureWeatherFetch(
-                latitude: Double,
-                longitude: Double,
-                appid: String,
-                units: String
-            ): FakeFutureWeatherResponse {
-                return fakeWeather["future"] as FakeFutureWeatherResponse
-            }
-        }
+    companion object {
+        private const val API_KEY = "4240ded606dd2468bd5ed39d7a005a32"// Write Your API key
+        private const val UNITS = "metric"
+        private const val COUNT = 5
     }
-    data class FakeCurrentWeatherResponse(
-        val icon: String,
-        val degrees: Double,
-        val windSpeed : Double,
-        val windDeg : Int,
-        val precipRain : Double?,
-        val precipSnow : Double?,
-        val date: Long
-    )
-    data class FakeTodayWeatherResponse(
-        val date : Long,
-        val degrees: Double,
-        val icon : String
-    )
-    data class FakeFutureWeatherResponse(
-        val date : Long,
-        val degrees : Double,
-        val icon : String
-    )
 }
