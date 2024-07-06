@@ -1,9 +1,7 @@
 package com.example.weatherapp
 
-import androidx.test.espresso.Espresso.pressBack
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,6 +14,11 @@ class WeatherAppTest {
     @Test
     fun test_launch_app_without_internet_connection(){
         // check main error
+        val weatherPage = WeatherPage()
+        weatherPage.checkVisibleNow()
+        weatherPage.checkEmptyWeatherToday()
+        weatherPage.checkEmptyWeatherFuture()
+
         // check empty recyclerViews
         // check error find city
     }

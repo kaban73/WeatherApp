@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -39,13 +40,10 @@ class WeatherPage {
             withParent(withId(rootId))
         )
     )
-    fun searchEditTextCheckVisibleNow() {
-        searchEditText().check(matches(isDisplayed()))
-    }
     fun clickSearchEditText() {
         searchEditText().perform(click())
     }
-    fun checkVisibleTodayWeatherInfoLayout() =
+    private fun checkVisibleTodayWeatherInfoLayout() =
         todayWeatherInfoLayout.checkVisibleTodayWeatherInfoLayout()
     fun checkWeatherToday(position : Int, image : Bitmap, time : String, degrees : String) {
         val weatherTodayLayout : Int = R.id.todayWeatherLayout
@@ -74,6 +72,33 @@ class WeatherPage {
             )
         ).check(matches(withText(degrees)))
     }
+    fun checkEmptyWeatherToday() {
+        val weatherTodayLayout : Int = R.id.todayWeatherLayout
+        onView(
+            allOf(
+                isAssignableFrom(ImageView::class.java),
+                withParent(withId(weatherTodayLayout)),
+                withParent(isAssignableFrom(LinearLayout::class.java)),
+                todayWeatherRecyclerViewMatcher().atPosition(0, R.id.todayWeatherIamgeView)
+            )
+        ).check(doesNotExist())
+        onView(
+            allOf(
+                isAssignableFrom(TextView::class.java),
+                withParent(withId(weatherTodayLayout)),
+                withParent(isAssignableFrom(LinearLayout::class.java)),
+                todayWeatherRecyclerViewMatcher().atPosition(0, R.id.todayWeatherTimeTextView)
+            )
+        ).check(doesNotExist())
+        onView(
+            allOf(
+                isAssignableFrom(TextView::class.java),
+                withParent(withId(weatherTodayLayout)),
+                withParent(isAssignableFrom(LinearLayout::class.java)),
+                todayWeatherRecyclerViewMatcher().atPosition(0, R.id.todayWeatherDegreesTextView)
+            )
+        ).check(doesNotExist())
+    }
     fun checkWeatherFuture(position: Int, image: Bitmap, date : String, rangeDegrees : String) {
         val weatherFutureLayout : Int = R.id.futureWeatherLayout
         onView(
@@ -100,5 +125,36 @@ class WeatherPage {
                 futureWeatherRecyclerViewMatcher().atPosition(position, R.id.futureWeatherRangeDegreesTextView)
             )
         ).check(matches(withText(rangeDegrees)))
+    }
+    fun checkEmptyWeatherFuture() {
+        val weatherFutureLayout : Int = R.id.futureWeatherLayout
+        onView(
+            allOf(
+                isAssignableFrom(ImageView::class.java),
+                withParent(withId(weatherFutureLayout)),
+                withParent(isAssignableFrom(ConstraintLayout::class.java)),
+                futureWeatherRecyclerViewMatcher().atPosition(0, R.id.futureWeatherImageView)
+            )
+        ).check(doesNotExist())
+        onView(
+            allOf(
+                isAssignableFrom(TextView::class.java),
+                withParent(withId(weatherFutureLayout)),
+                withParent(isAssignableFrom(ConstraintLayout::class.java)),
+                futureWeatherRecyclerViewMatcher().atPosition(0, R.id.futureWeatherDateTextView)
+            )
+        ).check(doesNotExist())
+        onView(
+            allOf(
+                isAssignableFrom(TextView::class.java),
+                withParent(withId(weatherFutureLayout)),
+                withParent(isAssignableFrom(ConstraintLayout::class.java)),
+                futureWeatherRecyclerViewMatcher().atPosition(0, R.id.futureWeatherRangeDegreesTextView)
+            )
+        ).check(doesNotExist())
+    }
+    fun checkVisibleNow() {
+        searchEditText().check(matches(isDisplayed()))
+        checkVisibleTodayWeatherInfoLayout()
     }
 }
