@@ -1,7 +1,5 @@
 package com.example.weatherapp.repository.weather
 
-import com.example.weatherapp.repository.weather.response.CurrentRainInfo
-import com.example.weatherapp.repository.weather.response.CurrentSnowInfo
 import com.example.weatherapp.repository.weather.response.CurrentWeatherInfo
 import com.example.weatherapp.repository.weather.response.CurrentWeatherMain
 import com.example.weatherapp.repository.weather.response.CurrentWeatherResponse
@@ -34,12 +32,8 @@ interface FakeWeatherService : WeatherService{
                     speed = 0.0,
                     deg = 0
                 ),
-                rain = CurrentRainInfo(
-                    precip = 0.0
-                ),
-                snow = CurrentSnowInfo(
-                    precip = 0.0
-                ),
+                rain = null,
+                snow = null,
                 date = 0L
             ),
             "today" to TodayWeatherResponse(
