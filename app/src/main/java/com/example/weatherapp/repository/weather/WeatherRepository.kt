@@ -1,6 +1,7 @@
 package com.example.weatherapp.repository.weather
 
 import com.example.weatherapp.weatherScreen.CurrentWeatherData
+import com.example.weatherapp.weatherScreen.FutureWeatherData
 import com.example.weatherapp.weatherScreen.TodayWeatherData
 import java.net.UnknownHostException
 
@@ -10,6 +11,10 @@ interface WeatherRepository {
         longitude : Double
     ) : WeatherLoadResult
     suspend fun todayWeatherLoad(
+        latitude : Double,
+        longitude : Double
+    ) : WeatherLoadResult
+    suspend fun futureWeatherLoad(
         latitude : Double,
         longitude : Double
     ) : WeatherLoadResult
@@ -57,6 +62,24 @@ interface WeatherRepository {
                 return WeatherLoadResult.TodayWeatherSuccess(response)
             } catch (e : Exception) {
                 return WeatherLoadResult.TodayWeatherError(e is UnknownHostException)
+            }
+        }
+
+        override suspend fun futureWeatherLoad(
+            latitude: Double,
+            longitude: Double
+        ): WeatherLoadResult {
+            try {
+                val response = ArrayList<FutureWeatherData>()
+                service.futureWeatherFetch(latitude, longitude).let {
+                    it.list.forEach {
+                        // NEED CREATE RESULT TRANSFORM
+                        response.add(FutureWeatherData(it.weather.last().icon, it.date, it.main.temp, it.main.temp))
+                    }
+                }
+                return WeatherLoadResult.FutureWeatherSuccess(response)
+            } catch (e : Exception) {
+                return WeatherLoadResult.FutureWeatherError(e is UnknownHostException)
             }
         }
     }

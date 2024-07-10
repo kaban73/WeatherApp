@@ -1,6 +1,7 @@
 package com.example.weatherapp.repository.weather
 
 import com.example.weatherapp.weatherScreen.CurrentWeatherData
+import com.example.weatherapp.weatherScreen.FutureWeatherData
 import com.example.weatherapp.weatherScreen.TodayWeatherData
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -45,6 +46,22 @@ class WeatherRepositoryTest {
             )
         )
         assertEquals(todayWeatherExpected, todayWeatherActual)
+
+        val futureWeatherActual = weatherRepository.futureWeatherLoad(
+            latitude = 54.3107593,
+            longitude = 48.3642771
+        )
+        val futureWeatherExpected = WeatherLoadResult.FutureWeatherSuccess(
+            data = listOf(
+                FutureWeatherData(
+                    icon = "icon",
+                    date = 0L,
+                    minDegrees = 0.0,
+                    maxDegrees = 0.0
+                )
+            )
+        )
+        assertEquals(futureWeatherExpected, futureWeatherActual)
     }
     @Test
     fun test_no_connection_exception() = runBlocking {
@@ -66,6 +83,13 @@ class WeatherRepositoryTest {
         )
         val todayWeatherExpected = WeatherLoadResult.TodayWeatherError(true)
         assertEquals(todayWeatherExpected, todayWeatherActual)
+
+        val futureWeatherActual = weatherRepository.futureWeatherLoad(
+            latitude = 54.3107593,
+            longitude = 48.3642771
+        )
+        val futureWeatherExpected = WeatherLoadResult.FutureWeatherError(true)
+        assertEquals(futureWeatherExpected, futureWeatherActual)
     }
 
     @Test
@@ -88,5 +112,12 @@ class WeatherRepositoryTest {
         )
         val todayWeatherExpected = WeatherLoadResult.TodayWeatherError(false)
         assertEquals(todayWeatherExpected, todayWeatherActual)
+
+        val futureWeatherActual = weatherRepository.futureWeatherLoad(
+            latitude = 54.3107593,
+            longitude = 48.3642771
+        )
+        val futureWeatherExpected = WeatherLoadResult.FutureWeatherError(false)
+        assertEquals(futureWeatherExpected, futureWeatherActual)
     }
 }
