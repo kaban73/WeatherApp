@@ -3,6 +3,7 @@ package com.example.weatherapp.repository.weather
 import com.example.weatherapp.weatherScreen.UiState
 import com.example.weatherapp.weatherScreen.WeatherLiveDataWrapper
 import com.example.weatherapp.weatherScreen.CurrentWeatherData
+import com.example.weatherapp.weatherScreen.FutureWeatherData
 import com.example.weatherapp.weatherScreen.TodayWeatherData
 
 interface WeatherLoadResult {
@@ -33,6 +34,20 @@ interface WeatherLoadResult {
     ) : WeatherLoadResult {
         override fun show(updateWeatherLiveData: WeatherLiveDataWrapper.Update) {
             updateWeatherLiveData.update(UiState.TodayWeatherDataShow(null ,noConnection))
+        }
+    }
+    data class FutureWeatherSuccess(
+        private val data : List<FutureWeatherData>
+    ) : WeatherLoadResult {
+        override fun show(updateWeatherLiveData: WeatherLiveDataWrapper.Update) {
+            updateWeatherLiveData.update(UiState.FutureWeatherDataShow(data, null))
+        }
+    }
+    data class FutureWeatherError(
+        private val noConnection: Boolean
+    ) : WeatherLoadResult {
+        override fun show(updateWeatherLiveData: WeatherLiveDataWrapper.Update) {
+            updateWeatherLiveData.update(UiState.FutureWeatherDataShow(null, noConnection))
         }
     }
 }
