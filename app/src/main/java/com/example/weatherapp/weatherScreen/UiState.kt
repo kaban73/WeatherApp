@@ -5,4 +5,8 @@ interface UiState {
         private val data : CurrentWeatherData?,
         private val noConnection: Boolean?
     ) : UiState
+    data class TodayWeatherDataShow(
+        private val data: List<TodayWeatherData>?,
+        private val noConnection: Boolean?
+    ) : UiState
 }

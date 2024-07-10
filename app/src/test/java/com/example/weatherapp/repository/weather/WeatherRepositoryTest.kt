@@ -1,6 +1,7 @@
 package com.example.weatherapp.repository.weather
 
 import com.example.weatherapp.weatherScreen.CurrentWeatherData
+import com.example.weatherapp.weatherScreen.TodayWeatherData
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -18,7 +19,7 @@ class WeatherRepositoryTest {
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val currentWeatherExpected = CurrentWeatherLoadResult.Success(
+        val currentWeatherExpected = WeatherLoadResult.CurrentWeatherSuccess(
             data = CurrentWeatherData(
                 icon = "icon",
                 degrees = 0.0,
@@ -29,6 +30,21 @@ class WeatherRepositoryTest {
             )
         )
         assertEquals(currentWeatherExpected, currentWeatherActual)
+
+        val todayWeatherActual = weatherRepository.todayWeatherLoad(
+            latitude = 54.3107593,
+            longitude = 48.3642771
+        )
+        val todayWeatherExpected = WeatherLoadResult.TodayWeatherSuccess(
+            data = listOf(
+                TodayWeatherData(
+                    icon = "icon",
+                    date = 0L,
+                    degrees = 0.0
+                )
+            )
+        )
+        assertEquals(todayWeatherExpected, todayWeatherActual)
     }
     @Test
     fun test_no_connection_exception() = runBlocking {
@@ -41,8 +57,15 @@ class WeatherRepositoryTest {
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val currentWeatherExpected = CurrentWeatherLoadResult.Error(true)
+        val currentWeatherExpected = WeatherLoadResult.CurrentWeatherError(true)
         assertEquals(currentWeatherExpected, currentWeatherActual)
+
+        val todayWeatherActual = weatherRepository.todayWeatherLoad(
+            latitude = 54.3107593,
+            longitude = 48.3642771
+        )
+        val todayWeatherExpected = WeatherLoadResult.TodayWeatherError(true)
+        assertEquals(todayWeatherExpected, todayWeatherActual)
     }
 
     @Test
@@ -56,7 +79,14 @@ class WeatherRepositoryTest {
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val currentWeatherExpected = CurrentWeatherLoadResult.Error(false)
+        val currentWeatherExpected = WeatherLoadResult.CurrentWeatherError(false)
         assertEquals(currentWeatherExpected, currentWeatherActual)
+
+        val todayWeatherActual = weatherRepository.todayWeatherLoad(
+            latitude = 54.3107593,
+            longitude = 48.3642771
+        )
+        val todayWeatherExpected = WeatherLoadResult.TodayWeatherError(false)
+        assertEquals(todayWeatherExpected, todayWeatherActual)
     }
 }
