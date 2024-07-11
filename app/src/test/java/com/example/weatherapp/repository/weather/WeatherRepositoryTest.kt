@@ -1,5 +1,6 @@
 package com.example.weatherapp.repository.weather
 
+import com.example.weatherapp.core.LoadResult
 import com.example.weatherapp.weatherScreen.CurrentWeatherData
 import com.example.weatherapp.weatherScreen.FutureWeatherData
 import com.example.weatherapp.weatherScreen.TodayWeatherData
@@ -20,7 +21,7 @@ class WeatherRepositoryTest {
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val currentWeatherExpected = WeatherLoadResult.CurrentWeatherSuccess(
+        val currentWeatherExpected = LoadResult.CurrentWeatherSuccess(
             data = CurrentWeatherData(
                 icon = "icon",
                 degrees = 0.0,
@@ -36,7 +37,7 @@ class WeatherRepositoryTest {
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val todayWeatherExpected = WeatherLoadResult.TodayWeatherSuccess(
+        val todayWeatherExpected = LoadResult.TodayWeatherSuccess(
             data = listOf(
                 TodayWeatherData(
                     icon = "icon",
@@ -51,7 +52,7 @@ class WeatherRepositoryTest {
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val futureWeatherExpected = WeatherLoadResult.FutureWeatherSuccess(
+        val futureWeatherExpected = LoadResult.FutureWeatherSuccess(
             data = listOf(
                 FutureWeatherData(
                     icon = "icon",
@@ -74,21 +75,21 @@ class WeatherRepositoryTest {
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val currentWeatherExpected = WeatherLoadResult.CurrentWeatherError(true)
+        val currentWeatherExpected = LoadResult.CurrentWeatherError(true)
         assertEquals(currentWeatherExpected, currentWeatherActual)
 
         val todayWeatherActual = weatherRepository.todayWeatherLoad(
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val todayWeatherExpected = WeatherLoadResult.TodayWeatherError(true)
+        val todayWeatherExpected = LoadResult.TodayWeatherError(true)
         assertEquals(todayWeatherExpected, todayWeatherActual)
 
         val futureWeatherActual = weatherRepository.futureWeatherLoad(
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val futureWeatherExpected = WeatherLoadResult.FutureWeatherError(true)
+        val futureWeatherExpected = LoadResult.FutureWeatherError(true)
         assertEquals(futureWeatherExpected, futureWeatherActual)
     }
 
@@ -103,21 +104,21 @@ class WeatherRepositoryTest {
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val currentWeatherExpected = WeatherLoadResult.CurrentWeatherError(false)
+        val currentWeatherExpected = LoadResult.CurrentWeatherError(false)
         assertEquals(currentWeatherExpected, currentWeatherActual)
 
         val todayWeatherActual = weatherRepository.todayWeatherLoad(
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val todayWeatherExpected = WeatherLoadResult.TodayWeatherError(false)
+        val todayWeatherExpected = LoadResult.TodayWeatherError(false)
         assertEquals(todayWeatherExpected, todayWeatherActual)
 
         val futureWeatherActual = weatherRepository.futureWeatherLoad(
             latitude = 54.3107593,
             longitude = 48.3642771
         )
-        val futureWeatherExpected = WeatherLoadResult.FutureWeatherError(false)
+        val futureWeatherExpected = LoadResult.FutureWeatherError(false)
         assertEquals(futureWeatherExpected, futureWeatherActual)
     }
 }

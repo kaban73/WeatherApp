@@ -1,5 +1,6 @@
 package com.example.weatherapp.repository.weather
 
+import com.example.weatherapp.core.LoadResult
 import com.example.weatherapp.weatherScreen.CurrentWeatherData
 import com.example.weatherapp.weatherScreen.FutureWeatherData
 import com.example.weatherapp.weatherScreen.TodayWeatherData
@@ -9,22 +10,22 @@ interface WeatherRepository {
     suspend fun currentWeatherLoad(
         latitude : Double,
         longitude : Double
-    ) : WeatherLoadResult
+    ) : LoadResult
     suspend fun todayWeatherLoad(
         latitude : Double,
         longitude : Double
-    ) : WeatherLoadResult
+    ) : LoadResult
     suspend fun futureWeatherLoad(
         latitude : Double,
         longitude : Double
-    ) : WeatherLoadResult
+    ) : LoadResult
     class Base(
         private val service: WeatherService
     ) : WeatherRepository {
         override suspend fun currentWeatherLoad(
             latitude: Double,
             longitude: Double
-        ): WeatherLoadResult {
+        ): LoadResult {
             try {
                 val response = service.currentWeatherFetch(latitude, longitude).let {
                     val precip = if (it.rain != null)
@@ -42,16 +43,16 @@ interface WeatherRepository {
                         it.date
                     )
                 }
-                return WeatherLoadResult.CurrentWeatherSuccess(response)
+                return LoadResult.CurrentWeatherSuccess(response)
             } catch (e: Exception) {
-                return WeatherLoadResult.CurrentWeatherError(e is UnknownHostException)
+                return LoadResult.CurrentWeatherError(e is UnknownHostException)
             }
         }
 
         override suspend fun todayWeatherLoad(
             latitude: Double,
             longitude: Double
-        ): WeatherLoadResult {
+        ): LoadResult {
             try {
                 val response = ArrayList<TodayWeatherData>()
                 service.todayWeatherFetch(latitude, longitude).let {
@@ -59,16 +60,16 @@ interface WeatherRepository {
                         response.add(TodayWeatherData(it.weather.last().icon, it.date, it.main.temp))
                     }
                 }
-                return WeatherLoadResult.TodayWeatherSuccess(response)
+                return LoadResult.TodayWeatherSuccess(response)
             } catch (e : Exception) {
-                return WeatherLoadResult.TodayWeatherError(e is UnknownHostException)
+                return LoadResult.TodayWeatherError(e is UnknownHostException)
             }
         }
 
         override suspend fun futureWeatherLoad(
             latitude: Double,
             longitude: Double
-        ): WeatherLoadResult {
+        ): LoadResult {
             try {
                 val response = ArrayList<FutureWeatherData>()
                 service.futureWeatherFetch(latitude, longitude).let {
@@ -77,9 +78,9 @@ interface WeatherRepository {
                         response.add(FutureWeatherData(it.weather.last().icon, it.date, it.main.temp, it.main.temp))
                     }
                 }
-                return WeatherLoadResult.FutureWeatherSuccess(response)
+                return LoadResult.FutureWeatherSuccess(response)
             } catch (e : Exception) {
-                return WeatherLoadResult.FutureWeatherError(e is UnknownHostException)
+                return LoadResult.FutureWeatherError(e is UnknownHostException)
             }
         }
     }

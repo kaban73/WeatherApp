@@ -1,5 +1,6 @@
 package com.example.weatherapp.repository.city
 
+import com.example.weatherapp.core.LoadResult
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,7 +17,7 @@ class CityRepositoryTest {
         val cityNameActual = cityRepository.load(
             cityName = "A"
         )
-        val cityNameExpected = CityLoadResult.Success(
+        val cityNameExpected = LoadResult.CityNameSuccess(
             data = listOf(
                 CityResponse(
                     name = "a",
@@ -32,15 +33,13 @@ class CityRepositoryTest {
             latitude = 1.2,
             longitude = 1.2
         )
-        val cityGeoExpected = CityLoadResult.Success(
-            listOf(
-                CityResponse(
-                    name = "b",
-                    lat = 1.2,
-                    lon = 1.2,
-                    country = "bb",
-                    state = "bbb"
-                )
+        val cityGeoExpected = LoadResult.CityGeoSuccess(
+            CityResponse(
+                name = "b",
+                lat = 1.2,
+                lon = 1.2,
+                country = "bb",
+                state = "bbb"
             )
         )
         assertEquals(cityGeoExpected, cityGeoActual)
@@ -55,7 +54,7 @@ class CityRepositoryTest {
         val cityNameActual = cityRepository.load(
             cityName = "A"
         )
-        val cityNameExpected = CityLoadResult.Error(
+        val cityNameExpected = LoadResult.CityNameError(
             noConnection = true
         )
         assertEquals(cityNameExpected, cityNameActual)
@@ -64,7 +63,7 @@ class CityRepositoryTest {
             latitude = 1.1,
             longitude = 1.1
         )
-        val cityGeoExpected = CityLoadResult.Error(
+        val cityGeoExpected = LoadResult.CityGeoError(
             noConnection = true
         )
         assertEquals(cityGeoExpected, cityGeoActual)
@@ -79,7 +78,7 @@ class CityRepositoryTest {
         val cityNameActual = cityRepository.load(
             cityName = "A"
         )
-        val cityNameExpected = CityLoadResult.Error(
+        val cityNameExpected = LoadResult.CityNameError(
             noConnection = false
         )
         assertEquals(cityNameExpected, cityNameActual)
@@ -88,7 +87,7 @@ class CityRepositoryTest {
             latitude = 1.1,
             longitude = 1.1
         )
-        val cityGeoExpected = CityLoadResult.Error(
+        val cityGeoExpected = LoadResult.CityGeoError(
             noConnection = false
         )
         assertEquals(cityGeoExpected, cityGeoActual)

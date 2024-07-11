@@ -4,20 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 interface LiveDataWrapper {
-    interface Read<T> {
-        fun liveData() : LiveData<T>
+    interface Read {
+        fun liveData() : LiveData<UiState>
     }
-    interface Update<T> {
-        fun update(value : T)
+    interface Update {
+        fun update(value : UiState)
     }
-    interface Mutable<T> : Read<T>, Update<T>
-    abstract class Base<T>(
-        private val liveData: MutableLiveData<T> = SingleLiveEvent()
-    ) : Mutable<T> {
-        override fun liveData(): LiveData<T> =
+    interface Mutable : Read, Update
+    class Base(
+        private val liveData : MutableLiveData<UiState> = SingleLiveEvent()
+    ) : Mutable {
+        override fun liveData(): LiveData<UiState> =
             liveData
 
-        override fun update(value: T) {
+        override fun update(value: UiState) {
             liveData.value = value
         }
     }
