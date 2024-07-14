@@ -47,4 +47,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.androidx.core.ktx.v1120)
+    implementation(libs.androidx.appcompat.v161)
+    implementation(libs.material.v1100)
+    implementation(libs.androidx.constraintlayout)
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.junit.v115)
+    androidTestImplementation(libs.androidx.espresso.core.v351)
 }
