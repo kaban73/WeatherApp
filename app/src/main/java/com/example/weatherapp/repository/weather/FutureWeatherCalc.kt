@@ -15,17 +15,19 @@ interface FutureWeatherCalc {
         override fun list(): List<FutureWeatherData> {
             val result = ArrayList<FutureWeatherData>()
             val list = futureWeatherResponse.list
-            val currData = getDate(list.first().date)
-            val filteredList = list.filter { getDate(it.date) > currData }
+            val currData = getFiltrDate(list.first().date)
+            val filteredList = list.filter { getFiltrDate(it.date) > currData }
             var newData = getDate(filteredList.first().date)
             var minDegrees = Double.MAX_VALUE
             var maxDegrees = Double.MIN_VALUE
+            val icon = ArrayList<String>()
             for(data in filteredList) {
                 val crData = getDate(data.date)
+                icon.add(data.weather.last().icon)
                 if (crData != newData) {
                     result.add(
                         FutureWeatherData(
-                            data.weather.last().icon,
+                            icon[icon.size/2],
                             newData,
                             minDegrees,
                             maxDegrees
@@ -34,6 +36,7 @@ interface FutureWeatherCalc {
                     minDegrees = Double.MAX_VALUE
                     maxDegrees = Double.MIN_VALUE
                     newData = crData
+                    icon.clear()
                 }
                 if (data.main.temp < minDegrees)
                     minDegrees = data.main.temp
@@ -41,6 +44,12 @@ interface FutureWeatherCalc {
                     maxDegrees = data.main.temp
             }
             return result
+        }
+
+        private fun getFiltrDate(unixTime : Long) : String {
+            val date = Date(unixTime * 1000)
+            val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            return sdf.format(date)
         }
 
         private fun getDate(unixTime : Long) : String {
