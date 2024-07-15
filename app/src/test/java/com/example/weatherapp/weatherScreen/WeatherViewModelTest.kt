@@ -3,6 +3,7 @@ package com.example.weatherapp.weatherScreen
 import com.example.weatherapp.core.FakeLiveDataWrapper
 import com.example.weatherapp.core.LoadResult
 import com.example.weatherapp.core.UiState
+import com.example.weatherapp.main.Navigation
 import com.example.weatherapp.repository.city.CityRepository
 import com.example.weatherapp.repository.city.CityResponse
 import com.example.weatherapp.repository.weather.WeatherRepository
@@ -31,14 +32,17 @@ class WeatherViewModelTest {
     private lateinit var cityRepository: FakeCityRepository
     private lateinit var liveDataWrapper: FakeLiveDataWrapper
     private lateinit var viewModel : WeatherViewModel
+    private lateinit var navigation : Navigation.Update
     private fun initialize() {
         weatherRepository = FakeWeatherRepository.Base()
         cityRepository = FakeCityRepository.Base()
         liveDataWrapper = FakeLiveDataWrapper.Base()
+        navigation = Navigation.Base()
         viewModel = WeatherViewModel(
             weatherRepository = weatherRepository,
             cityRepository = cityRepository,
-            liveDataWrapper = liveDataWrapper
+            liveDataWrapper = liveDataWrapper,
+            navigation = navigation
         )
     }
     @Test

@@ -2,6 +2,7 @@ package com.example.weatherapp.weatherScreen
 
 import androidx.lifecycle.ViewModel
 import com.example.weatherapp.core.LiveDataWrapper
+import com.example.weatherapp.main.Navigation
 import com.example.weatherapp.repository.city.CityRepository
 import com.example.weatherapp.repository.weather.WeatherRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,6 +15,7 @@ class WeatherViewModel(
     private val weatherRepository: WeatherRepository,
     private val cityRepository: CityRepository,
     private val liveDataWrapper: LiveDataWrapper.Mutable,
+    private val navigation: Navigation.Update,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val dispatcherMain : CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel(){
