@@ -29,9 +29,15 @@ interface UiState {
                 else
                     imageView.setImageResource(R.drawable.ic_something_wrong)
                 nowDegreesTextView.text = "${data.degrees}C"
-                windTextView.text = "Wind: ${data.windSpeed} m/s ${data.windDeg}"
+                val windDir = getWindDirection(data.windDeg)
+                windTextView.text = "Wind: ${"%.1f".format(data.windSpeed * 3.6)} km/h ${windDir}"
                 precipTextView.text = "Precip: ${data.precip.first} mm ${data.precip.second}"
             }
+        }
+        private fun getWindDirection(degrees: Int): String {
+            val directions = listOf("North", "North-East", "East", "South-East", "South", "South-West", "West", "North-West")
+            val index = ((degrees + 22.5) / 45).toInt() and 7
+            return directions[index]
         }
     }
     data class TodayWeatherDataShow(

@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:layout_marginTop="20dp"
         android:id="@+id/searchCityEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

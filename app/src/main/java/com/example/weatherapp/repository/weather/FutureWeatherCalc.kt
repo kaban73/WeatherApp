@@ -54,7 +54,7 @@ interface FutureWeatherCalc {
 
         private fun getDate(unixTime : Long) : String {
             val date = Date(unixTime * 1000L)
-            val sdf = SimpleDateFormat("EEEE, d MMMM", Locale.getDefault())
+            val sdf = SimpleDateFormat("EEEE, d MMMM", Locale.US)
             val formattedDate = sdf.format(date)
             return formattedDate
         }
