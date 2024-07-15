@@ -7,6 +7,9 @@ import com.example.weatherapp.main.Navigation
 import com.example.weatherapp.repository.city.CityRepository
 import com.example.weatherapp.repository.city.CityResponse
 import com.example.weatherapp.repository.weather.WeatherRepository
+import com.example.weatherapp.weatherScreen.current.CurrentWeatherData
+import com.example.weatherapp.weatherScreen.future.FutureWeatherData
+import com.example.weatherapp.weatherScreen.today.TodayWeatherData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -83,7 +86,7 @@ class WeatherViewModelTest {
                     data = listOf(
                         FutureWeatherData(
                             "icon",
-                            0L,
+                            "",
                             0.0,
                             0.0
                         )
@@ -132,7 +135,7 @@ class WeatherViewModelTest {
                     data = listOf(
                         FutureWeatherData(
                             "icon",
-                            0L,
+                            "",
                             0.0,
                             0.0
                         )

@@ -1,10 +1,10 @@
 package com.example.weatherapp.repository.weather
 
 import com.example.weatherapp.core.FakeLiveDataWrapper
-import com.example.weatherapp.weatherScreen.CurrentWeatherData
-import com.example.weatherapp.weatherScreen.FutureWeatherData
+import com.example.weatherapp.weatherScreen.current.CurrentWeatherData
+import com.example.weatherapp.weatherScreen.future.FutureWeatherData
 import com.example.weatherapp.core.UiState
-import com.example.weatherapp.weatherScreen.TodayWeatherData
+import com.example.weatherapp.weatherScreen.today.TodayWeatherData
 import com.example.weatherapp.core.LiveDataWrapper
 import com.example.weatherapp.core.LoadResult
 import org.junit.Test
@@ -81,7 +81,7 @@ class WeatherLoadResultTest {
             data = listOf(
                 FutureWeatherData(
                     icon = "icon",
-                    date = 0L,
+                    date = "",
                     minDegrees = 0.0,
                     maxDegrees = 0.0
                 )
@@ -117,7 +117,7 @@ class WeatherLoadResultTest {
                     data = listOf(
                         FutureWeatherData(
                             icon = "icon",
-                            date = 0L,
+                            date = "",
                             minDegrees = 0.0,
                             maxDegrees = 0.0
                         )

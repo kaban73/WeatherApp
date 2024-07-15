@@ -1,9 +1,9 @@
 package com.example.weatherapp.core
 
 import com.example.weatherapp.repository.city.CityResponse
-import com.example.weatherapp.weatherScreen.CurrentWeatherData
-import com.example.weatherapp.weatherScreen.FutureWeatherData
-import com.example.weatherapp.weatherScreen.TodayWeatherData
+import com.example.weatherapp.weatherScreen.current.CurrentWeatherData
+import com.example.weatherapp.weatherScreen.future.FutureWeatherData
+import com.example.weatherapp.weatherScreen.today.TodayWeatherData
 
 interface LoadResult {
     fun show(updateLiveData: LiveDataWrapper.Update)

@@ -23,7 +23,7 @@ class WeatherViewModel(
     fun liveData() =
         liveDataWrapper.liveData()
     fun load(geoData : GeoData) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             cityRepository.load(geoData.latitude, geoData.longitude).show(liveDataWrapper)
             weatherRepository.currentWeatherLoad(geoData.latitude, geoData.longitude).show(liveDataWrapper)
             weatherRepository.todayWeatherLoad(geoData.latitude, geoData.longitude).show(liveDataWrapper)

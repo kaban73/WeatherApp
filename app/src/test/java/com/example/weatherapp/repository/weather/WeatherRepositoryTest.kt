@@ -1,9 +1,9 @@
 package com.example.weatherapp.repository.weather
 
 import com.example.weatherapp.core.LoadResult
-import com.example.weatherapp.weatherScreen.CurrentWeatherData
-import com.example.weatherapp.weatherScreen.FutureWeatherData
-import com.example.weatherapp.weatherScreen.TodayWeatherData
+import com.example.weatherapp.weatherScreen.current.CurrentWeatherData
+import com.example.weatherapp.weatherScreen.future.FutureWeatherData
+import com.example.weatherapp.weatherScreen.today.TodayWeatherData
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -56,7 +56,7 @@ class WeatherRepositoryTest {
             data = listOf(
                 FutureWeatherData(
                     icon = "icon",
-                    date = 0L,
+                    date = "",
                     minDegrees = 0.0,
                     maxDegrees = 0.0
                 )

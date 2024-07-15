@@ -1,4 +1,4 @@
-package com.example.weatherapp.weatherScreen
+package com.example.weatherapp.weatherScreen.current
 
 data class CurrentWeatherData(
     val icon : String,
