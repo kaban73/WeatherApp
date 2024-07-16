@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.viewbinding)
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.tasks)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -60,4 +62,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit.v115)
     androidTestImplementation(libs.androidx.espresso.core.v351)
+    implementation (libs.play.services.location)
 }

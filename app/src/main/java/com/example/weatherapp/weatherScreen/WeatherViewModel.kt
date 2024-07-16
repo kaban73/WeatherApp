@@ -5,9 +5,7 @@ import com.example.weatherapp.cityScreen.CityScreen
 import com.example.weatherapp.core.LiveDataWrapper
 import com.example.weatherapp.main.Navigation
 import com.example.weatherapp.repository.city.CityRepository
-import com.example.weatherapp.repository.city.CityResponse
 import com.example.weatherapp.repository.weather.WeatherRepository
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -18,8 +16,6 @@ class WeatherViewModel(
     private val cityRepository: CityRepository,
     private val liveDataWrapper: LiveDataWrapper.Mutable,
     private val navigation: Navigation.Update,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val dispatcherMain : CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel(){
     private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     fun liveData() =
