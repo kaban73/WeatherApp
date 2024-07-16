@@ -1,8 +1,10 @@
 package com.example.weatherapp.core
 
+import android.content.Context
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.cityScreen.list.CitiesAdapter
@@ -13,6 +15,9 @@ import com.example.weatherapp.weatherScreen.future.FutureWeatherAdapter
 import com.example.weatherapp.weatherScreen.future.FutureWeatherData
 import com.example.weatherapp.weatherScreen.today.TodayWeatherAdapter
 import com.example.weatherapp.weatherScreen.today.TodayWeatherData
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 interface UiState {
     data class CurrentWeatherDataShow(
@@ -21,6 +26,7 @@ interface UiState {
     ) : UiState {
         fun show(
             imageView: ImageView,
+            todayDateTextView: TextView,
             nowDegreesTextView: TextView,
             windTextView: TextView,
             precipTextView: TextView
@@ -31,16 +37,30 @@ interface UiState {
                     imageView.setImageResource(resId)
                 else
                     imageView.setImageResource(R.drawable.ic_something_wrong)
+                todayDateTextView.text = getDate(data.date)
                 nowDegreesTextView.text = "${data.degrees}C"
                 val windDir = getWindDirection(data.windDeg)
-                windTextView.text = "Wind: ${"%.1f".format(data.windSpeed * 3.6)} km/h ${windDir}"
+                windTextView.text = "Wind: ${"%.1f".format(data.windSpeed * 3.6)} km/h $windDir"
                 precipTextView.text = "Precip: ${data.precip.first} mm ${data.precip.second}"
+            } else {
+                if (noConnection!!) {
+                    imageView.setImageResource(R.drawable.ic_no_connection)
+                    nowDegreesTextView.text = "No internet connection"
+                } else {
+                    imageView.setImageResource(R.drawable.ic_something_wrong)
+                    nowDegreesTextView.text = "Something went wrong"
+                }
             }
         }
         private fun getWindDirection(degrees: Int): String {
             val directions = listOf("North", "North-East", "East", "South-East", "South", "South-West", "West", "North-West")
             val index = ((degrees + 22.5) / 45).toInt() and 7
             return directions[index]
+        }
+        private fun getDate(unixTime : Long) : String {
+            val date = Date(unixTime * 1000)
+            val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            return sdf.format(date)
         }
     }
     data class TodayWeatherDataShow(
@@ -56,6 +76,8 @@ interface UiState {
                 val rangeDegrees = findRangeDegrees(data)
                 todayRangeDegreesTextView.text = "Min: ${rangeDegrees.first}C; Max: ${rangeDegrees.second}C"
             }
+            else
+                adapter.clear()
         }
 
         private fun findRangeDegrees(data: List<TodayWeatherData>): Pair<Double, Double> {
@@ -77,19 +99,30 @@ interface UiState {
         fun show(adapter : FutureWeatherAdapter) {
             if (data != null)
                 adapter.update(data)
+            else
+                adapter.clear()
         }
     }
     data class CitiesListDataShow(
         private val data: List<CityResponse>?,
         private val noConnection: Boolean?
     ) : UiState {
-        fun show(adapter : CitiesAdapter) {
+        fun show(adapter : CitiesAdapter, context : Context) {
             if (data != null) {
                 val list = ArrayList<CityData>()
                 data.forEach {
-                    list.add(CityData("${it.name}, ${it.state}, ${it.country}", it.lat, it.lon))
+                    val state = it.state?.let { " $it," } ?: ""
+                    list.add(CityData("${it.name}, $state ${it.country}", it.lat, it.lon))
                 }
                 adapter.update(list)
+                if (data.isEmpty())
+                    Toast.makeText(context, "Not found cities with this name", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                if (noConnection!!)
+                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -101,7 +134,11 @@ interface UiState {
             if (data != null) {
                 editText.setText("${data.name}, ${data.state}, ${data.country}")
             } else {
-
+                if (noConnection!!) {
+                    editText.setText("No internet connection")
+                } else {
+                    editText.setText("Something went wrong")
+                }
             }
         }
     }

@@ -26,6 +26,10 @@ class FutureWeatherAdapter : RecyclerView.Adapter<WeatherDayViewHolder>() {
         list.addAll(newList)
         res.dispatchUpdatesTo(this)
     }
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
+    }
 }
 
 class WeatherDayDiffUtilCallback(

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.cityScreen.list.ChooseCity
@@ -53,14 +54,19 @@ class CityFragment : AbstractFragment<CityFragmentBinding>() {
 
         b.cityEditText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) {
-                viewModel.findCities(b.cityEditText.text.toString())
+                if (b.cityEditText.text?.isEmpty() == true)
+                    Toast.makeText(requireActivity().applicationContext, "Please enter the name of the city", Toast.LENGTH_SHORT).show()
+                else {
+                    viewModel.findCities(b.cityEditText.text.toString())
+                    hideKeyboard()
+                }
                 return@setOnEditorActionListener true
             }
             false
         }
 
         viewModel.liveData().observe(viewLifecycleOwner) {
-            it.show(citiesAdapter)
+            it.show(citiesAdapter, requireActivity().applicationContext)
         }
     }
 

@@ -28,6 +28,10 @@ class TodayWeatherAdapter : RecyclerView.Adapter<WeatherHourViewHolder>() {
         list.addAll(newList)
         res.dispatchUpdatesTo(this)
     }
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
+    }
 
 }
 class WeatherHourDiffUtilCallback(

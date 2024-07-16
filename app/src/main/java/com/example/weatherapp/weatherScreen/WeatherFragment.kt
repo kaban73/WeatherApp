@@ -32,16 +32,13 @@ class WeatherFragment : AbstractFragment<WeatherFragmentBinding>() {
                 it.show(b.searchCityEditText)
             }
             if (it is UiState.CurrentWeatherDataShow) {
-                it.show(b.nowWeatherImageView, b.nowDegreesTextView, b.windTextView, b.precipTextView)
+                it.show(b.nowWeatherImageView, b.todayDateTextView ,b.nowDegreesTextView, b.windTextView, b.precipTextView)
             }
             if (it is UiState.TodayWeatherDataShow) {
                 it.show(todayWeatherAdapter, b.todayRangeDegreesTextView)
             }
             if (it is UiState.FutureWeatherDataShow) {
                 it.show(futureWeatherAdapter)
-            }
-            if (it is UiState.CitiesListDataShow) {
-                
             }
         }
 
