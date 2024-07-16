@@ -1,4 +1,4 @@
-package com.example.weatherapp.cityScreen
+package com.example.weatherapp.cityScreen.list
 
 import android.widget.TextView
 

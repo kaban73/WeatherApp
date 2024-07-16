@@ -5,8 +5,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
-import com.example.weatherapp.cityScreen.CitiesAdapter
-import com.example.weatherapp.cityScreen.CityData
+import com.example.weatherapp.cityScreen.list.CitiesAdapter
+import com.example.weatherapp.cityScreen.list.CityData
 import com.example.weatherapp.repository.city.CityResponse
 import com.example.weatherapp.weatherScreen.current.CurrentWeatherData
 import com.example.weatherapp.weatherScreen.future.FutureWeatherAdapter
@@ -83,14 +83,13 @@ interface UiState {
         private val data: List<CityResponse>?,
         private val noConnection: Boolean?
     ) : UiState {
-        fun show(adapter : CitiesAdapter, citiesRecyclerView : RecyclerView) {
+        fun show(adapter : CitiesAdapter) {
             if (data != null) {
                 val list = ArrayList<CityData>()
                 data.forEach {
                     list.add(CityData("${it.name}, ${it.state}, ${it.country}", it.lat, it.lon))
                 }
                 adapter.update(list)
-                citiesRecyclerView.adapter = adapter
             }
         }
     }

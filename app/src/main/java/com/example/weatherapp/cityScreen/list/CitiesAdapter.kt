@@ -1,4 +1,4 @@
-package com.example.weatherapp.cityScreen
+package com.example.weatherapp.cityScreen.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
