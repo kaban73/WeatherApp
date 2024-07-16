@@ -1,9 +1,11 @@
 package com.example.weatherapp.weatherScreen
 
 import androidx.lifecycle.ViewModel
+import com.example.weatherapp.cityScreen.CityScreen
 import com.example.weatherapp.core.LiveDataWrapper
 import com.example.weatherapp.main.Navigation
 import com.example.weatherapp.repository.city.CityRepository
+import com.example.weatherapp.repository.city.CityResponse
 import com.example.weatherapp.repository.weather.WeatherRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -29,5 +31,8 @@ class WeatherViewModel(
             weatherRepository.todayWeatherLoad(geoData.latitude, geoData.longitude).show(liveDataWrapper)
             weatherRepository.futureWeatherLoad(geoData.latitude, geoData.longitude).show(liveDataWrapper)
         }
+    }
+    fun changeCity(cityName : String) {
+        navigation.update(CityScreen(cityName))
     }
 }
