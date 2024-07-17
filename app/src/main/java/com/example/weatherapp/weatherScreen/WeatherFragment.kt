@@ -1,6 +1,5 @@
 package com.example.weatherapp.weatherScreen
 
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -80,8 +79,9 @@ class WeatherFragment : AbstractFragment<WeatherFragmentBinding>() {
                 it.show(futureWeatherAdapter)
             }
         }
-        b.searchCityEditText.setOnClickListener{
-            viewModel.changeCity(b.searchCityEditText.text.toString())
+        b.searchCityEditText.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus)
+                viewModel.changeCity(b.searchCityEditText.text.toString())
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
@@ -93,7 +93,6 @@ class WeatherFragment : AbstractFragment<WeatherFragmentBinding>() {
                 permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION,
                     false) || permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION,
                     false) -> {
-                    Toast.makeText(requireActivity().applicationContext, "ok", Toast.LENGTH_SHORT).show()
                     if(isLocationEnabled()) {
                         if (ActivityCompat.checkSelfPermission(
                                 requireActivity().applicationContext,
@@ -115,13 +114,15 @@ class WeatherFragment : AbstractFragment<WeatherFragmentBinding>() {
                         }
 
                     } else {
-                        Toast.makeText(requireActivity().applicationContext, "turn loc", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity().applicationContext, TURN_LOCATION_MSG, Toast.LENGTH_SHORT).show()
+                        b.nowWeatherImageView.setImageResource(R.drawable.ic_unknown_location)
+                        b.nowDegreesTextView.text = LOCATION_DISABLED_MSG
                         createLocationRequest()
                     }
                 } else -> {
-                Toast.makeText(requireActivity().applicationContext, "no access", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity().applicationContext, NO_ACCESS_LOCATION_MSG, Toast.LENGTH_SHORT).show()
                 b.nowWeatherImageView.setImageResource(R.drawable.ic_unknown_location)
-                b.nowDegreesTextView.text = "No access to geolocation"
+                b.nowDegreesTextView.text = NO_ACCESS_LOCATION_MSG
             }
             }
         }
@@ -131,11 +132,10 @@ class WeatherFragment : AbstractFragment<WeatherFragmentBinding>() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
         )
-
-        //viewModel.load(GeoData(LAT, LON))
     }
-//    companion object { // temporarily
-//        private const val LAT = 54.3107593
-//        private const val LON = 48.3642771
-//    }
+    companion object {
+        private const val TURN_LOCATION_MSG = "Please enable geolocation and restart app"
+        private const val NO_ACCESS_LOCATION_MSG = "No access to geolocation"
+        private const val LOCATION_DISABLED_MSG = "Geolocation is disabled"
+    }
 }

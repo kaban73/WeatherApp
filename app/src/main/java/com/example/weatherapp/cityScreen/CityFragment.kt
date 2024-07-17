@@ -27,6 +27,7 @@ class CityFragment : AbstractFragment<CityFragmentBinding>() {
             return instance
         }
         private const val KEY = "cityNameKey"
+        private const val ENTER_THE_CITY = "Please enter the name of the city"
     }
     override fun bind(inflater: LayoutInflater, container: ViewGroup?): CityFragmentBinding {
         return CityFragmentBinding.inflate(inflater, container, false)
@@ -36,6 +37,7 @@ class CityFragment : AbstractFragment<CityFragmentBinding>() {
     private val citiesAdapter = CitiesAdapter(object  : ChooseCity {
         override fun choose(cityData: CityData) {
             b.cityEditText.setText(cityData.name)
+            b.cityEditText.setSelection(b.cityEditText.text?.length ?: 0)
             viewModel.changeCity(GeoData(cityData.lat, cityData.lon))
         }
     })
@@ -50,12 +52,14 @@ class CityFragment : AbstractFragment<CityFragmentBinding>() {
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
         val cityName = requireArguments().getString(KEY)
         b.cityEditText.setText(cityName)
+        b.cityEditText.requestFocus()
+        b.cityEditText.setSelection(b.cityEditText.text?.length ?: 0)
         b.cityRecyclerView.adapter = citiesAdapter
 
         b.cityEditText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 if (b.cityEditText.text?.isEmpty() == true)
-                    Toast.makeText(requireActivity().applicationContext, "Please enter the name of the city", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity().applicationContext, ENTER_THE_CITY, Toast.LENGTH_SHORT).show()
                 else {
                     viewModel.findCities(b.cityEditText.text.toString())
                     hideKeyboard()
