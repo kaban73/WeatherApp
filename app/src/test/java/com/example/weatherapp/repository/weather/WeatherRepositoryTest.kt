@@ -48,6 +48,10 @@ class WeatherRepositoryTest {
         )
         assertEquals(todayWeatherExpected, todayWeatherActual)
 
+        /**
+         * To solve this test, you need to find out UnixTime and JSON, which gives the Weather API 5 Day / 3 Hour Forecast
+         * And in the future, write a converter class that will calculate the weather for days, depending on the UnixTime
+         */
         val futureWeatherActual = weatherRepository.futureWeatherLoad(
             latitude = 54.3107593,
             longitude = 48.3642771
@@ -56,9 +60,9 @@ class WeatherRepositoryTest {
             data = listOf(
                 FutureWeatherData(
                     icon = "icon",
-                    date = "",
-                    minDegrees = 0.0,
-                    maxDegrees = 0.0
+                    date = "Friday, 2 January",
+                    minDegrees = 1.0,
+                    maxDegrees = 2.0
                 )
             )
         )

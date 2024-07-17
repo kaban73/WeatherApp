@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.cityScreen.list.ChooseCity
 import com.example.weatherapp.cityScreen.list.CitiesAdapter
 import com.example.weatherapp.cityScreen.list.CityData

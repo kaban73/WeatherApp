@@ -1,9 +1,10 @@
 package com.example.weatherapp.weatherScreen
 
+import com.example.weatherapp.cityScreen.CityScreen
 import com.example.weatherapp.core.FakeLiveDataWrapper
 import com.example.weatherapp.core.LoadResult
 import com.example.weatherapp.core.UiState
-import com.example.weatherapp.main.Navigation
+import com.example.weatherapp.main.FakeNavigation
 import com.example.weatherapp.repository.city.CityRepository
 import com.example.weatherapp.repository.city.CityResponse
 import com.example.weatherapp.repository.weather.WeatherRepository
@@ -35,12 +36,12 @@ class WeatherViewModelTest {
     private lateinit var cityRepository: FakeCityRepository
     private lateinit var liveDataWrapper: FakeLiveDataWrapper
     private lateinit var viewModel : WeatherViewModel
-    private lateinit var navigation : Navigation.Update
+    private lateinit var navigation : FakeNavigation
     private fun initialize() {
         weatherRepository = FakeWeatherRepository.Base()
         cityRepository = FakeCityRepository.Base()
         liveDataWrapper = FakeLiveDataWrapper.Base()
-        navigation = Navigation.Base()
+        navigation = FakeNavigation.Base()
         viewModel = WeatherViewModel(
             weatherRepository = weatherRepository,
             cityRepository = cityRepository,
@@ -144,6 +145,104 @@ class WeatherViewModelTest {
                 )
             )
         )
+    }
+    @Test
+    fun test_no_internet_connection() {
+        cityRepository.expectResult(
+            LoadResult.CityGeoError(
+                noConnection = true
+            )
+        )
+        weatherRepository.expectResult(
+            mapOf(
+                "current" to LoadResult.CurrentWeatherError(
+                    noConnection = true
+                ),
+                "today" to LoadResult.TodayWeatherError(
+                    noConnection = true
+                ),
+                "future" to LoadResult.FutureWeatherError(
+                    noConnection = true
+                )
+            )
+        )
+        viewModel.load(GeoData(
+            latitude = 0.0,
+            longitude = 0.0
+        ))
+        liveDataWrapper.checkUpdateCalls(
+            listOf(
+                UiState.CityGeoDataShow(
+                    data = null,
+                    noConnection = true
+                ),
+                UiState.CurrentWeatherDataShow(
+                    data = null,
+                    noConnection = true
+                ),
+                UiState.TodayWeatherDataShow(
+                    data = null,
+                    noConnection = true
+                ),
+                UiState.FutureWeatherDataShow(
+                    data = null,
+                    noConnection = true
+                )
+            )
+        )
+    }
+    @Test
+    fun test_other_exception() {
+        cityRepository.expectResult(
+            LoadResult.CityGeoError(
+                noConnection = false
+            )
+        )
+        weatherRepository.expectResult(
+            mapOf(
+                "current" to LoadResult.CurrentWeatherError(
+                    noConnection = false
+                ),
+                "today" to LoadResult.TodayWeatherError(
+                    noConnection = false
+                ),
+                "future" to LoadResult.FutureWeatherError(
+                    noConnection = false
+                )
+            )
+        )
+        viewModel.load(GeoData(
+            latitude = 0.0,
+            longitude = 0.0
+        ))
+        liveDataWrapper.checkUpdateCalls(
+            listOf(
+                UiState.CityGeoDataShow(
+                    data = null,
+                    noConnection = false
+                ),
+                UiState.CurrentWeatherDataShow(
+                    data = null,
+                    noConnection = false
+                ),
+                UiState.TodayWeatherDataShow(
+                    data = null,
+                    noConnection = false
+                ),
+                UiState.FutureWeatherDataShow(
+                    data = null,
+                    noConnection = false
+                )
+            )
+        )
+    }
+    @Test
+    fun test_change_city() {
+        val cityName = "Any cityName from editTextView"
+        viewModel.changeCity(
+            cityName = cityName
+        )
+        navigation.checkUpdateCalled(listOf(CityScreen(cityName)))
     }
     private interface FakeWeatherRepository : WeatherRepository {
         fun expectResult(results : Map<String, LoadResult>)

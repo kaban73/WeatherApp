@@ -52,7 +52,8 @@ interface FakeWeatherService : WeatherService{
                 )
             ),
             "future" to FutureWeatherResponse(
-                list = listOf(FutureWeatherList(
+                list = listOf(
+                    FutureWeatherList(
                     date = 0L,
                     main = FutureWeatherMain(
                         temp = 0.0
@@ -60,7 +61,33 @@ interface FakeWeatherService : WeatherService{
                     weather = listOf(FutureWeatherWeather(
                         icon = "icon"
                     ))
-                ))
+                ), FutureWeatherList(
+                        date = 86400L,
+                        main = FutureWeatherMain(
+                            temp = 1.0
+                        ),
+                        weather = listOf(FutureWeatherWeather(
+                            icon = "icon"
+                        ))
+                    ),
+                    FutureWeatherList(
+                        date = 129600L,
+                        main = FutureWeatherMain(
+                            temp = 2.0
+                        ),
+                        weather = listOf(FutureWeatherWeather(
+                            icon = "icon"
+                        ))
+                    ),
+                    FutureWeatherList(
+                        date = 17280000L,
+                        main = FutureWeatherMain(
+                            temp = 3.0
+                        ),
+                        weather = listOf(FutureWeatherWeather(
+                            icon = "icon"
+                        ))
+                    ))
             )
         )
         private var expectSuccessResult : Boolean = false

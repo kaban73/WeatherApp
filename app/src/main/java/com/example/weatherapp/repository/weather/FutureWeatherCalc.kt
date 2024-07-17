@@ -40,7 +40,7 @@ interface FutureWeatherCalc {
                 }
                 if (data.main.temp < minDegrees)
                     minDegrees = data.main.temp
-                else if (data.main.temp > maxDegrees)
+                if (data.main.temp > maxDegrees)
                     maxDegrees = data.main.temp
             }
             return result
