@@ -1,13 +1,18 @@
-package com.example.weatherapp.weatherScreen
+package com.example.weatherapp.cityScreen
 
-import com.example.weatherapp.cityScreen.CityScreen
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import com.example.weatherapp.cityScreen.list.CityListLiveDataWrapper
+import com.example.weatherapp.core.ClearViewModel
 import com.example.weatherapp.core.FakeLiveDataWrapper
 import com.example.weatherapp.core.LoadResult
 import com.example.weatherapp.core.UiState
 import com.example.weatherapp.main.FakeNavigation
+import com.example.weatherapp.main.Screen
 import com.example.weatherapp.repository.FakeCityRepository
 import com.example.weatherapp.repository.FakeWeatherRepository
 import com.example.weatherapp.repository.city.CityResponse
+import com.example.weatherapp.weatherScreen.GeoData
 import com.example.weatherapp.weatherScreen.current.CurrentWeatherData
 import com.example.weatherapp.weatherScreen.future.FutureWeatherData
 import com.example.weatherapp.weatherScreen.today.TodayWeatherData
@@ -17,10 +22,11 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class WeatherViewModelTest {
+class CityViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
@@ -35,22 +41,88 @@ class WeatherViewModelTest {
     private lateinit var weatherRepository: FakeWeatherRepository
     private lateinit var cityRepository: FakeCityRepository
     private lateinit var liveDataWrapper: FakeLiveDataWrapper
-    private lateinit var viewModel : WeatherViewModel
+    private lateinit var cityListLiveDataWrapper : FakeCityListLiveDataWrapper
+    private lateinit var viewModel : CityViewModel
     private lateinit var navigation : FakeNavigation
+    private lateinit var clearViewModel: FakeClearViewModel
     private fun initialize() {
         weatherRepository = FakeWeatherRepository.Base()
         cityRepository = FakeCityRepository.Base()
         liveDataWrapper = FakeLiveDataWrapper.Base()
+        cityListLiveDataWrapper = FakeCityListLiveDataWrapper.Base()
         navigation = FakeNavigation.Base()
-        viewModel = WeatherViewModel(
+        clearViewModel = FakeClearViewModel.Base()
+        viewModel = CityViewModel(
+            liveDataWrapper = liveDataWrapper,
+            cityListLiveDataWrapper = cityListLiveDataWrapper,
             weatherRepository = weatherRepository,
             cityRepository = cityRepository,
-            liveDataWrapper = liveDataWrapper,
-            navigation = navigation
+            navigation = navigation,
+            clearViewModel = clearViewModel
         )
     }
     @Test
-    fun test() {
+    fun test_find_cities() {
+        val cityName = "City"
+        cityRepository.expectResult(
+            LoadResult.CityNameSuccess(
+                data = listOf(
+                    CityResponse(
+                        cityName,
+                        0.0,
+                        0.0,
+                        "city",
+                        "city"
+                    )
+                )
+            )
+        )
+        viewModel.findCities(cityName)
+        cityListLiveDataWrapper.checkCalledValue(
+            UiState.CitiesListDataShow(
+                data = listOf(
+                    CityResponse(
+                        cityName,
+                        0.0,
+                        0.0,
+                        "city",
+                        "city"
+                    )
+                ),
+                noConnection = null
+            )
+        )
+
+        val noInternet = "noInternet"
+        cityRepository.expectResult(
+            LoadResult.CityNameError(
+                noConnection = true
+            )
+        )
+        viewModel.findCities(noInternet)
+        cityListLiveDataWrapper.checkCalledValue(
+            UiState.CitiesListDataShow(
+                data = null,
+                noConnection = true
+            )
+        )
+
+        val nonExistenCityName = "nonExistenCityName"
+        cityRepository.expectResult(
+            LoadResult.CityNameError(
+                noConnection = false
+            )
+        )
+        viewModel.findCities(nonExistenCityName)
+        cityListLiveDataWrapper.checkCalledValue(
+            UiState.CitiesListDataShow(
+                data = null,
+                noConnection = false
+            )
+        )
+    }
+    @Test
+    fun test_changeCity() {
         cityRepository.expectResult(
             LoadResult.CityGeoSuccess(
                 data = CityResponse(
@@ -95,10 +167,12 @@ class WeatherViewModelTest {
                 )
             )
         )
-        viewModel.load(GeoData(
+        viewModel.changeCity(
+            GeoData(
             latitude = 0.0,
             longitude = 0.0
-        ))
+        )
+        )
         liveDataWrapper.checkUpdateCalls(
             listOf(
                 UiState.CityGeoDataShow(
@@ -166,7 +240,7 @@ class WeatherViewModelTest {
                 )
             )
         )
-        viewModel.load(GeoData(
+        viewModel.changeCity(GeoData(
             latitude = 0.0,
             longitude = 0.0
         ))
@@ -211,7 +285,7 @@ class WeatherViewModelTest {
                 )
             )
         )
-        viewModel.load(GeoData(
+        viewModel.changeCity(GeoData(
             latitude = 0.0,
             longitude = 0.0
         ))
@@ -237,11 +311,43 @@ class WeatherViewModelTest {
         )
     }
     @Test
-    fun test_change_city() {
-        val cityName = "Any cityName from editTextView"
-        viewModel.changeCity(
-            cityName = cityName
-        )
-        navigation.checkUpdateCalled(listOf(CityScreen(cityName)))
+    fun test_comeback() {
+        viewModel.comeback()
+        navigation.checkUpdateCalled(listOf(Screen.Pop))
+        clearViewModel.checkClearCalled(CityViewModel::class.java)
+    }
+    private interface FakeCityListLiveDataWrapper : CityListLiveDataWrapper.Mutable {
+        fun checkCalledValue(expected : UiState.CitiesListDataShow)
+        class Base : FakeCityListLiveDataWrapper {
+            private lateinit var actual : UiState
+            override fun checkCalledValue(expected : UiState.CitiesListDataShow) {
+                assertEquals(expected, actual)
+            }
+
+            override fun liveData(): LiveData<UiState.CitiesListDataShow> {
+                throw IllegalStateException("dont used in this test")
+            }
+
+            override fun update(value: UiState) {
+                actual = value
+            }
+
+        }
+    }
+    private interface FakeClearViewModel : ClearViewModel {
+
+        fun checkClearCalled(expected: Class<out ViewModel>)
+
+        class Base : FakeClearViewModel {
+            private lateinit var actual: Class<out ViewModel>
+
+            override fun checkClearCalled(expected: Class<out ViewModel>) {
+                assertEquals(expected, actual)
+            }
+
+            override fun <T : ViewModel> clear(viewModelClass: Class<T>) {
+                actual = viewModelClass
+            }
+        }
     }
 }
