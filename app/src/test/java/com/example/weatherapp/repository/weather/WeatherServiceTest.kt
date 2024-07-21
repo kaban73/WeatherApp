@@ -8,7 +8,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 /**
  * Please check https://openweathermap.org/api for Current Weather Data and 5 Day / 3 Hour Forecast
@@ -70,7 +69,7 @@ class WeatherServiceTest {
         assertEquals(expectedFutureWeather, actualFutureWeather)
     }
     companion object {
-        private const val API_KEY = "4240ded606dd2468bd5ed39d7a005a32"// Write Your API key
+        private const val API_KEY = "84a747af1c1b16948f619fabcbd8a684"// Write Your API key
         private const val UNITS = "metric"
         private const val COUNT = 5
     }

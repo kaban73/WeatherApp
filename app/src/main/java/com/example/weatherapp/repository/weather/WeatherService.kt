@@ -34,7 +34,7 @@ interface WeatherService {
     ) : FutureWeatherResponse
 
     companion object {
-        private const val API_KEY = "4240ded606dd2468bd5ed39d7a005a32"
+        private const val API_KEY = "84a747af1c1b16948f619fabcbd8a684"
         private const val UNITS = "metric"
         private const val COUNT = 5
     }
